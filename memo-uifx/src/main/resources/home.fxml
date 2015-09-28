@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.controller.HomeController">
+   <children>
+      <SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+        <items>
+          <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0">
+               <children>
+                  <TreeView id="memoTreeView" layoutX="41.0" layoutY="49.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <SplitPane dividerPositions="0.1310483870967742" orientation="VERTICAL" prefHeight="498.0" prefWidth="452.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane id="menuView" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0">
+                           <children>
+                              <HBox prefHeight="62.0" prefWidth="590.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <ImageView disable="true" fitHeight="58.0" fitWidth="200.0" opacity="0.65" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/memo-logo.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets left="5.0" top="20.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" layoutX="250.0" layoutY="14.0" prefHeight="49.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Button fx:id="btnSave" layoutX="44.0" layoutY="19.0" mnemonicParsing="false" onAction="#saveItem" prefWidth="60.0" text="Save">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="btnCancel" layoutX="123.0" layoutY="19.0" mnemonicParsing="false" onAction="#resetForm" prefWidth="60.0" text="Cancel">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="btnDelete" layoutX="225.0" layoutY="19.0" mnemonicParsing="false" onAction="#deleteItem" prefWidth="60.0" text="Delete">
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane id="mainView" minHeight="0.0" minWidth="0.0" prefHeight="329.0" prefWidth="450.0">
+                           <children>
+                              <GridPane hgap="5.0" layoutX="78.0" layoutY="154.0" prefHeight="428.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columnConstraints>
+                                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="25.0" />
+                                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+                                  <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints percentHeight="60.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Category :">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="memoCategory" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                    </ComboBox>
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Short Description :" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Date Added :" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Date Last Modified :" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <DatePicker fx:id="memoAddedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                    </DatePicker>
+                                    <DatePicker fx:id="memoLastModifiedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                    </DatePicker>
+                                    <TextField fx:id="memoShortDescription" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Content : " GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="System Italic" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <TextArea fx:id="memoContent" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="5.0" right="5.0" />
+                                       </GridPane.margin>
+                                       <font>
+                                          <Font name="Courier New" size="13.0" />
+                                       </font>
+                                    </TextArea>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
