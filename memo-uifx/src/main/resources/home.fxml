@@ -42,16 +42,25 @@
                                        <HBox.margin>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </HBox.margin>
+                                       <font>
+                                          <Font name="Courier New" size="12.0" />
+                                       </font>
                                     </Button>
                                     <Button fx:id="btnCancel" layoutX="123.0" layoutY="19.0" mnemonicParsing="false" onAction="#resetForm" prefWidth="60.0" text="Cancel">
                                        <HBox.margin>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </HBox.margin>
+                                       <font>
+                                          <Font name="Courier New" size="12.0" />
+                                       </font>
                                     </Button>
                                     <Button fx:id="btnDelete" layoutX="225.0" layoutY="19.0" mnemonicParsing="false" onAction="#deleteItem" prefWidth="60.0" text="Delete">
                                        <HBox.margin>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </HBox.margin>
+                                       <font>
+                                          <Font name="Courier New" size="12.0" />
+                                       </font>
                                     </Button>
                                  </children>
                               </HBox>
@@ -77,7 +86,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                        <font>
-                                          <Font name="System Italic" size="13.0" />
+                                          <Font name="Courier New Italic" size="12.0" />
                                        </font>
                                     </Label>
                                     <ComboBox fx:id="memoCategory" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.valignment="CENTER">
@@ -90,7 +99,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                        <font>
-                                          <Font name="System Italic" size="13.0" />
+                                          <Font name="Courier New Italic" size="12.0" />
                                        </font>
                                     </Label>
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Date Added :" GridPane.rowIndex="2">
@@ -98,7 +107,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                        <font>
-                                          <Font name="System Italic" size="13.0" />
+                                          <Font name="Courier New Italic" size="12.0" />
                                        </font>
                                     </Label>
                                     <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Date Last Modified :" GridPane.rowIndex="3">
@@ -106,7 +115,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                        <font>
-                                          <Font name="System Italic" size="13.0" />
+                                          <Font name="Courier New Italic" size="12.0" />
                                        </font>
                                     </Label>
                                     <DatePicker fx:id="memoAddedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -129,7 +138,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                        <font>
-                                          <Font name="System Italic" size="13.0" />
+                                          <Font name="Courier New Italic" size="12.0" />
                                        </font>
                                     </Label>
                                     <TextArea fx:id="memoContent" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
@@ -137,7 +146,7 @@
                                           <Insets left="5.0" right="5.0" />
                                        </GridPane.margin>
                                        <font>
-                                          <Font name="Courier New" size="13.0" />
+                                          <Font name="Courier New" size="14.0" />
                                        </font>
                                     </TextArea>
                                  </children>
