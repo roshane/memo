@@ -5,15 +5,22 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ro.ducati.entity.Category;
 import ro.ducati.entity.MemoItem;
+import ro.ducati.service.CoreService;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 
+@Component
 public class HomeController {
+
+    @Autowired
+    private CoreService coreService;
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -78,20 +85,18 @@ public class HomeController {
 
         memoAddedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
         memoLastModifiedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
-
-        final ObservableList<Category> categories = FXCollections.<Category>observableArrayList();
-        addDummyCategories(categories);
-        memoCategory.setItems(categories);
+addDummyCategories(null);
+//        final ObservableList<Category> categories = FXCollections.<Category>observableArrayList();
+//        addDummyCategories(categories);
+//        memoCategory.setItems(categories);
 
 
     }
 
     private void addDummyCategories(ObservableList<Category> categories) {
-        final Category java = new Category("Java");
-        final Category scala = new Category("Scala");
-        final Category cSharp = new Category("C#");
-        categories.add(java);
-        categories.add(scala);
-        categories.add(cSharp);
+        StringBuilder sb = new StringBuilder();
+        coreService.findAllMemoItems().forEach(i->sb.append(i.toString()+"\n"));
+        memoContent.setText(sb.toString());
+
     }
 }

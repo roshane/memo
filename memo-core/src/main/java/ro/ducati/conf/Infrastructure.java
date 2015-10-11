@@ -1,13 +1,19 @@
 package ro.ducati.conf;
 
+import org.apache.derby.database.Database;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -21,6 +27,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:/application.properties"})
+@EnableJpaRepositories(basePackages = {"ro.ducati.repo"})
 public class Infrastructure {
 
     private
@@ -56,7 +63,7 @@ public class Infrastructure {
         factoryBean.setDataSource(dataSource());
         factoryBean.setPackagesToScan("ro.ducati.entity");
         factoryBean.setJpaPropertyMap(getJpaPropertyMap());
-
+        factoryBean.setJpaVendorAdapter(vendorAdapter());
         return factoryBean;
     }
 
@@ -64,9 +71,26 @@ public class Infrastructure {
         Map<String, Object> jpaProperties = new HashMap<>();
         jpaProperties.put(AvailableSettings.DIALECT,"org.hibernate.dialect.DerbyTenSevenDialect");
         jpaProperties.put(AvailableSettings.AUTOCOMMIT,true);
-        jpaProperties.put(AvailableSettings.FORMAT_SQL,true);
+        jpaProperties.put(AvailableSettings.FORMAT_SQL, true);
         return jpaProperties;
     }
 
+    @Bean
+    public HibernateJpaVendorAdapter vendorAdapter(){
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setShowSql(true);
+        vendorAdapter.setDatabase(org.springframework.orm.jpa.vendor.Database.DERBY);
+        return vendorAdapter;
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean(name = "transactionManager")
+    public PlatformTransactionManager txManager() {
+        return new DataSourceTransactionManager(dataSource());
+    }
 
 }
