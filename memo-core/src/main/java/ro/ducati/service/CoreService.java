@@ -1,5 +1,6 @@
 package ro.ducati.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import ro.ducati.entity.Category;
 import ro.ducati.entity.MemoItem;
 
@@ -15,7 +16,6 @@ public interface CoreService {
     Iterable<MemoItem> findAllMemoItems();
 
     MemoItem delete(MemoItem memoItem);
-
 
     Category save(Category category);
 

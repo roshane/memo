@@ -22,11 +22,11 @@ public class MemoItemRepositoryTestTest extends BaseTest {
     public void setUp() throws Exception {
         final MemoItem memoItem = new MemoItem("Java", "Simple Test", LocalDate.now(), LocalDate.now(), "Sample content");
         memoItemRepository.save(memoItem);
-
     }
 
-//    @Test
+    @Test
     public void testFindAllMemoItems() throws Exception {
+        setUp();
         System.out.println("##########################################################");
         memoItemRepository.findAll().forEach(item->logger.debug("item : [{}]",item));
         System.out.println("##########################################################");

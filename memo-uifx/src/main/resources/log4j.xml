@@ -13,7 +13,7 @@
     </appender>
 
     <appender name="debugFile" class="org.apache.log4j.FileAppender">
-        <param name="file" value="K:\DEV\logs\javafx_debug.log"/>
+        <param name="file" value="memo-debug.log"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%-5p %c{1} - %m%n"/>
         </layout>
@@ -28,9 +28,9 @@
     </category>
 
     <root>
-        <priority value="debug"/>
+        <priority value="error"/>
         <appender-ref ref="console"/>
-        <!--<appender-ref ref="debugFile"/>-->
+        <appender-ref ref="debugFile"/>
     </root>
 
 </log4j:configuration>

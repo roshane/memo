@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import ro.ducati.BaseTest;
 import ro.ducati.entity.Category;
 import ro.ducati.entity.MemoItem;
@@ -15,7 +16,6 @@ import java.time.LocalDate;
 /**
  * Created by roshane on 9/21/2015.
  */
-
 public class DefaultCoreServiceTestTest extends BaseTest {
 
     @Autowired(required = true)
@@ -29,6 +29,7 @@ public class DefaultCoreServiceTestTest extends BaseTest {
 
     @Before
     public void feedData() throws Exception {
+        logger.debug(">>>>>>>>>>>>>>>>  feeding dummy data <<<<<<<<<<<<<<<<<<<");
         final MemoItem memoItem = new MemoItem("Java", "Simple Test", LocalDate.now(), LocalDate.now(), "Sample content");
         Category category = new Category("java");
         coreService.save(category);

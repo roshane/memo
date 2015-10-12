@@ -1,10 +1,11 @@
 package ro.controller;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.ducati.entity.Category;
@@ -19,46 +20,40 @@ import java.util.ResourceBundle;
 @Component
 public class HomeController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
+
     @Autowired
     private CoreService coreService;
 
-    @FXML // ResourceBundle that was given to the FXMLLoader
+    @FXML
     private ResourceBundle resources;
 
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
+    @FXML
     private URL location;
 
-    @FXML // fx:id="memoContent"
-    private TextArea memoContent; // Value injected by FXMLLoader
-
-    @FXML // fx:id="btnCancel"
-    private Button btnCancel; // Value injected by FXMLLoader
-
-    @FXML // fx:id="btnSave"
-    private Button btnSave; // Value injected by FXMLLoader
-
-    @FXML // fx:id="btnDelete"
-    private Button btnDelete; // Value injected by FXMLLoader
-
-    @FXML // fx:id="memoCategory"
-    private ComboBox<Category> memoCategory; // Value injected by FXMLLoader
-
-    @FXML // fx:id="memoLastModifiedDate"
-    private DatePicker memoLastModifiedDate; // Value injected by FXMLLoader
-
-    @FXML // fx:id="memoAddedDate"
-    private DatePicker memoAddedDate; // Value injected by FXMLLoader
-
-    @FXML // fx:id="memoShortDescription"
-    private TextField memoShortDescription; // Value injected by FXMLLoader
-
+    @FXML
+    private TextArea memoContent;
+    @FXML
+    private Button btnCancel;
+    @FXML
+    private Button btnSave;
+    @FXML
+    private Button btnDelete;
+    @FXML
+    private ComboBox<Category> memoCategory;
+    @FXML
+    private DatePicker memoLastModifiedDate;
+    @FXML
+    private DatePicker memoAddedDate;
+    @FXML
+    private TextField memoShortDescription;
     @FXML
     void saveItem(ActionEvent event) {
         final MemoItem memoItem = new MemoItem(memoCategory.getSelectionModel().getSelectedItem().toString(),
                 memoShortDescription.getText(),
                 memoAddedDate.getValue(), memoLastModifiedDate.getValue(), memoContent.getText());
 
-        System.out.println("Application save event "+memoItem);
+        LOGGER.debug("Application save event [{}]", memoItem);
     }
 
     @FXML
@@ -72,7 +67,6 @@ public class HomeController {
     }
 
     @FXML
-        // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert memoContent != null : "fx:id=\"memoContent\" was not injected: check your FXML file 'home.fxml'.";
         assert btnCancel != null : "fx:id=\"btnCancel\" was not injected: check your FXML file 'home.fxml'.";
@@ -85,17 +79,17 @@ public class HomeController {
 
         memoAddedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
         memoLastModifiedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
-addDummyCategories(null);
+        addDummyCategories(null);
 //        final ObservableList<Category> categories = FXCollections.<Category>observableArrayList();
 //        addDummyCategories(categories);
 //        memoCategory.setItems(categories);
-
-
     }
 
     private void addDummyCategories(ObservableList<Category> categories) {
+        LOGGER.debug("loading categories");
         StringBuilder sb = new StringBuilder();
         coreService.findAllMemoItems().forEach(i->sb.append(i.toString()+"\n"));
+
         memoContent.setText(sb.toString());
 
     }

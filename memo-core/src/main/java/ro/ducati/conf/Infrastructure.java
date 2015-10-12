@@ -1,6 +1,5 @@
 package ro.ducati.conf;
 
-import org.apache.derby.database.Database;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -25,9 +25,9 @@ import java.util.Map;
  * @author roshanep@hsenidmobile.com
  */
 @Configuration
-@EnableTransactionManagement
 @PropertySource(value = {"classpath:/application.properties"})
 @EnableJpaRepositories(basePackages = {"ro.ducati.repo"})
+@EnableTransactionManagement
 public class Infrastructure {
 
     private
@@ -72,6 +72,7 @@ public class Infrastructure {
         jpaProperties.put(AvailableSettings.DIALECT,"org.hibernate.dialect.DerbyTenSevenDialect");
         jpaProperties.put(AvailableSettings.AUTOCOMMIT,true);
         jpaProperties.put(AvailableSettings.FORMAT_SQL, true);
+        jpaProperties.put(AvailableSettings.HBM2DDL_AUTO,hbm2ddl);
         return jpaProperties;
     }
 
@@ -90,7 +91,10 @@ public class Infrastructure {
 
     @Bean(name = "transactionManager")
     public PlatformTransactionManager txManager() {
-        return new DataSourceTransactionManager(dataSource());
+        JpaTransactionManager jpaTransactionManager
+                = new JpaTransactionManager(entityManagerFactoryBean().getObject());
+        jpaTransactionManager.setDataSource(dataSource());
+        return jpaTransactionManager;
     }
 
 }
