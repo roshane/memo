@@ -28,13 +28,13 @@ public class MemoApplicationContextTest extends BaseTest {
 
     @Test
     public void testInsertCategory() throws Exception {
-        Category category = coreService.save(new Category("maven"));
-        LOGGER.debug("saved category [{}]",category);
-//        printAll(coreService.findAllCategories());
+//        Category category = coreService.save(new Category("maven"));
+//        LOGGER.debug("saved category [{}]",category);
+        printAll(coreService.findAllCategories());
     }
 
     private void printAll(Iterable<Category> categories){
         System.out.println("All available categories");
-        categories.forEach(c->System.out.println(c.toString()));
+        categories.forEach(c -> LOGGER.debug("category [{}]", c));
     }
 }
