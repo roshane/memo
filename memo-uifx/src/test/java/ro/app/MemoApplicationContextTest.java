@@ -19,12 +19,12 @@ public class MemoApplicationContextTest extends BaseTest {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(MemoApplicationContextTest.class);
 
-//    @Test
-//    public void testSample() throws Exception {
-//        Assert.assertNotNull(coreService);
-//        coreService.findAllMemoItems().forEach(System.out::println);
-//        coreService.findAllCategories().forEach(System.out::println);
-//    }
+    @Test
+    public void testSample() throws Exception {
+        Assert.assertNotNull(coreService);
+        coreService.findAllMemoItems().forEach(System.out::println);
+        coreService.findAllCategories().forEach(System.out::println);
+    }
 
     @Test
     public void testInsertCategory() throws Exception {

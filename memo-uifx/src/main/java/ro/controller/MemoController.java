@@ -1,36 +1,38 @@
 package ro.controller;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ro.ducati.entity.Category;
+import org.springframework.util.StringUtils;
+import ro.domain.FormError;
 import ro.ducati.entity.MemoItem;
 import ro.ducati.service.CoreService;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Component
-public class HomeController {
+public class MemoController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HomeController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MemoController.class);
 
     @Autowired
     private CoreService coreService;
 
     @FXML
     private ResourceBundle resources;
-
     @FXML
     private URL location;
-
     @FXML
     private TextArea memoContent;
     @FXML
@@ -40,7 +42,7 @@ public class HomeController {
     @FXML
     private Button btnDelete;
     @FXML
-    private ComboBox<Category> memoCategory;
+    private ComboBox<String> memoCategory;
     @FXML
     private DatePicker memoLastModifiedDate;
     @FXML
@@ -48,17 +50,53 @@ public class HomeController {
     @FXML
     private TextField memoShortDescription;
     @FXML
-    void saveItem(ActionEvent event) {
-        final MemoItem memoItem = new MemoItem(memoCategory.getSelectionModel().getSelectedItem().toString(),
-                memoShortDescription.getText(),
-                memoAddedDate.getValue(), memoLastModifiedDate.getValue(), memoContent.getText());
+    private AnchorPane actionViewContainer;
+    @FXML
+    private GridPane addMemoView;
 
-        LOGGER.debug("Application save event [{}]", memoItem);
+    private GridPane addCategoryView;
+
+    private List<FormError> validationErrors;
+
+    @FXML
+    void saveItem(ActionEvent event) {
+        if (isValidateForm()) {
+            final MemoItem memoItem = new MemoItem(
+                    memoCategory.getSelectionModel().getSelectedItem(),
+                    memoShortDescription.getText(),
+                    memoAddedDate.getValue(),
+                    memoLastModifiedDate.getValue(),
+                    memoContent.getText());
+            LOGGER.debug("Application save event [{}]", memoItem);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            String errorMessages = validationErrors.stream()
+                    .map(FormError::toString).reduce("", (a, b) -> a.concat("\n" + b));
+            alert.setContentText(errorMessages);
+            alert.setHeaderText(null);
+            alert.show();
+        }
+    }
+
+    private boolean isValidateForm() {
+        validationErrors = new ArrayList<>();
+        addMemoView.getChildren().forEach(node -> {
+            if (node instanceof TextInputControl) {
+                if (StringUtils.isEmpty(((TextInputControl) node).getText())) {
+                    validationErrors.add(new FormError(node, FormError.ERROR_TYPE.EMPTY_FIELD));
+                }
+            }
+        });
+        return validationErrors.size() == 0;
     }
 
     @FXML
     void resetForm(ActionEvent event) {
-        System.out.println("Application reset event");
+        addMemoView.getChildren().forEach(node -> {
+            if (node instanceof TextInputControl) {
+                ((TextInputControl) node).clear();
+            }
+        });
     }
 
     @FXML
@@ -79,18 +117,12 @@ public class HomeController {
 
         memoAddedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
         memoLastModifiedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
-        addDummyCategories(null);
-//        final ObservableList<Category> categories = FXCollections.<Category>observableArrayList();
-//        addDummyCategories(categories);
-//        memoCategory.setItems(categories);
+        loadCategories();
     }
 
-    private void addDummyCategories(ObservableList<Category> categories) {
-        LOGGER.debug("loading categories");
-        StringBuilder sb = new StringBuilder();
-        coreService.findAllMemoItems().forEach(i->sb.append(i.toString()+"\n"));
-
-        memoContent.setText(sb.toString());
-
+    private void loadCategories() {
+        coreService.findAllCategories().forEach(category -> {
+            memoCategory.getItems().add(category.getLabel());
+        });
     }
 }
