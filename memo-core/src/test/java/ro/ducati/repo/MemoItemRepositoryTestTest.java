@@ -37,4 +37,9 @@ public class MemoItemRepositoryTestTest extends BaseTest {
         Iterable<MemoItem> items = memoItemRepository.findByShortDescriptionContainingIgnoreCase("SimPle");
         logger.debug("item[{}]",items);
     }
+
+    @Test
+    public void testDeleteAllMemoItems() throws Exception {
+        memoItemRepository.deleteAll();
+    }
 }

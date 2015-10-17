@@ -1,5 +1,7 @@
 package ro.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -56,17 +58,25 @@ public class MemoController {
 
     private GridPane addCategoryView;
 
+    private ListView lvMemoItems;
+
     private List<FormError> validationErrors;
+
+    private ObservableList<MemoItem> memoItemList;
 
     @FXML
     void saveItem(ActionEvent event) {
-        if (isValidateForm()) {
+        if (isValidForm()) {
             final MemoItem memoItem = new MemoItem(
                     memoCategory.getSelectionModel().getSelectedItem(),
                     memoShortDescription.getText(),
                     memoAddedDate.getValue(),
                     memoLastModifiedDate.getValue(),
                     memoContent.getText());
+            memoItemList.add(memoItem);
+            coreService.save(memoItem);
+            clearForm(new ActionEvent());
+            loadMemoItems();
             LOGGER.debug("Application save event [{}]", memoItem);
         } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -78,7 +88,7 @@ public class MemoController {
         }
     }
 
-    private boolean isValidateForm() {
+    private boolean isValidForm() {
         validationErrors = new ArrayList<>();
         addMemoView.getChildren().forEach(node -> {
             if (node instanceof TextInputControl) {
@@ -86,12 +96,23 @@ public class MemoController {
                     validationErrors.add(new FormError(node, FormError.ERROR_TYPE.EMPTY_FIELD));
                 }
             }
+            if (node instanceof ComboBox) {
+                if (StringUtils.isEmpty(((ComboBox) node).getSelectionModel().getSelectedItem())) {
+                    validationErrors.add(new FormError(node, FormError.ERROR_TYPE.EMPTY_FIELD));
+                }
+            }
         });
+        for (MemoItem memoItem : coreService.find(memoShortDescription.getText().trim())) {
+            if (memoItem.getCategory()
+                    .equals(memoCategory.getSelectionModel().getSelectedItem()))
+                validationErrors
+                        .add(new FormError(memoShortDescription, FormError.ERROR_TYPE.ALREADY_EXIST));
+        }
         return validationErrors.size() == 0;
     }
 
     @FXML
-    void resetForm(ActionEvent event) {
+    void clearForm(ActionEvent event) {
         addMemoView.getChildren().forEach(node -> {
             if (node instanceof TextInputControl) {
                 ((TextInputControl) node).clear();
@@ -101,26 +122,61 @@ public class MemoController {
 
     @FXML
     void deleteItem(ActionEvent event) {
-        System.out.println("Application delete event");
+        String selectedItem = (String) lvMemoItems.getSelectionModel().getSelectedItem();
+        LOGGER.debug("deleting item [{}]", selectedItem);
+        //TODO implement delete logic here
     }
 
     @FXML
     void initialize() {
-        assert memoContent != null : "fx:id=\"memoContent\" was not injected: check your FXML file 'home.fxml'.";
-        assert btnCancel != null : "fx:id=\"btnCancel\" was not injected: check your FXML file 'home.fxml'.";
-        assert btnSave != null : "fx:id=\"btnSave\" was not injected: check your FXML file 'home.fxml'.";
-        assert btnDelete != null : "fx:id=\"btnDelete\" was not injected: check your FXML file 'home.fxml'.";
-        assert memoCategory != null : "fx:id=\"memoCategory\" was not injected: check your FXML file 'home.fxml'.";
-        assert memoLastModifiedDate != null : "fx:id=\"memoLastModifiedDate\" was not injected: check your FXML file 'home.fxml'.";
-        assert memoAddedDate != null : "fx:id=\"memoAddedDate\" was not injected: check your FXML file 'home.fxml'.";
-        assert memoShortDescription != null : "fx:id=\"memoShortDescription\" was not injected: check your FXML file 'home.fxml'.";
+        LOGGER.debug("Initializing [{}]", MemoController.class.getSimpleName());
+        if (this.lvMemoItems == null) {
+            this.lvMemoItems = ((ViewContainerController) VCStore.getController(ViewContainerController.class))
+                    .getTvMemoItems();
+            this.memoItemList = FXCollections.observableArrayList();
+//        TODO complete onChange listener to memoItemsList
+//            memoItemList.addListener((ListChangeListener<MemoItem>) c -> {
+//                if(lvMemoItems!=null)
+//                    lvMemoItems.getItems().add(c.getAddedSubList().get(0).getShortDescription());
+//                LOGGER.debug("changed item [{}]", c);
+//            });
+        }
+        refresh();
 
+    }
+
+
+    @FXML
+    void refresh() {
+        LOGGER.debug("refreshing the addMemoView");
         memoAddedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
         memoLastModifiedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
         loadCategories();
+        loadMemoItems();
+    }
+
+    private void loadMemoItems() {
+        LOGGER.debug("loading memo items");
+        memoItemList.clear();
+        coreService.findAllMemoItems().forEach(memoItemList::add);
+        if (lvMemoItems == null) {
+            LOGGER.debug("loading lvMemoItems");
+            this.lvMemoItems = ((ViewContainerController) VCStore.getController(ViewContainerController.class))
+                    .getTvMemoItems();
+        }
+        if (lvMemoItems != null) {
+            LOGGER.debug("lvMemoItems Loaded");
+            lvMemoItems.getItems().clear();
+            memoItemList.forEach(memoItem -> lvMemoItems.getItems()
+                    .add(memoItem.getShortDescription()));
+        } else {
+            LOGGER.error("lvMemoItems loading failed");
+        }
     }
 
     private void loadCategories() {
+        LOGGER.debug("loading categories");
+        memoCategory.getItems().clear();
         coreService.findAllCategories().forEach(category -> {
             memoCategory.getItems().add(category.getLabel());
         });

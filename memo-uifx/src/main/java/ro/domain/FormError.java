@@ -1,6 +1,7 @@
 package ro.domain;
 
 import javafx.scene.Node;
+import javafx.scene.control.TextInputControl;
 
 import java.text.MessageFormat;
 
@@ -9,14 +10,23 @@ import java.text.MessageFormat;
  */
 public class FormError {
 
-    private Node node;
     private String errorMessage;
 
-    public static final String EMPTY_FIELD = "{0} cannot be empty";
-
     public FormError(Node node, ERROR_TYPE errorType) {
-        this.node = node;
-        this.errorMessage = MessageFormat.format(errorType.message, node.getId());
+
+
+        switch (errorType) {
+            case EMPTY_FIELD:
+                this.errorMessage = MessageFormat.format(errorType.message, node.getId());
+                break;
+            case ALREADY_EXIST:
+                if (node instanceof TextInputControl)
+                    this.errorMessage = MessageFormat
+                            .format(errorType.message, ((TextInputControl) node).getText());
+                break;
+            default:
+                break;
+        }
 
     }
 
@@ -26,8 +36,8 @@ public class FormError {
     }
 
     public enum ERROR_TYPE {
-        EMPTY_FIELD("{0} cannot be empty.");
-
+        EMPTY_FIELD("{0} cannot be empty."),
+        ALREADY_EXIST("entry with description [{0}] already exist");
         private String message;
 
         ERROR_TYPE(String message) {

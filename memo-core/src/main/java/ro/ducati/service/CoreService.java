@@ -17,6 +17,8 @@ public interface CoreService {
 
     MemoItem delete(MemoItem memoItem);
 
+    Category delete(Category category);
+
     Category save(Category category);
 
     Iterable<Category> findAllCategories();

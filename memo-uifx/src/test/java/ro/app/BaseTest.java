@@ -11,5 +11,5 @@ import ro.core.MemoApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MemoApplicationContext.class})
-public class BaseTest {
+public abstract class BaseTest {
 }

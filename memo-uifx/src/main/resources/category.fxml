@@ -1,94 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<GridPane hgap="5.0" prefHeight="428.0"
-          prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="ro.controller.CategoryController" fx:id="addCategoryView"
-          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-   <children>
-      <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Category :" GridPane.rowIndex="1">
-         <font>
-            <Font name="Courier New Italic" size="12.0" />
-         </font>
-         <GridPane.margin>
-            <Insets left="5.0" right="5.0" />
-         </GridPane.margin>
-      </Label>
-      <TextField fx:id="categoryLabel" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets left="5.0" right="5.0" />
-         </GridPane.margin>
-      </TextField>
-      <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Description : " GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <font>
-            <Font name="Courier New Italic" size="12.0" />
-         </font>
-         <GridPane.margin>
-            <Insets left="5.0" right="5.0" />
-         </GridPane.margin>
-      </Label>
-      <TextArea fx:id="categoryDescription" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <font>
-            <Font name="Courier New" size="14.0" />
-         </font>
-         <GridPane.margin>
-            <Insets left="5.0" right="5.0" />
-         </GridPane.margin>
-      </TextArea>
-      <HBox alignment="CENTER" GridPane.columnSpan="2">
-         <children>
-            <Label text="Add Category" textAlignment="CENTER" GridPane.columnIndex="1">
-               <font>
-                  <Font name="Serif Regular" size="22.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="3">
-         <children>
-            <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#viewAddMemo" text="Delete">
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="FreeMono Bold" size="13.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearForm" text="Clear">
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="FreeMono Bold" size="13.0" />
-               </font>
-            </Button>
-            <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveCategory" text="Save">
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="FreeMono Bold" size="13.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-   </children>
-   <columnConstraints>
-      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="25.0" />
-      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-   </columnConstraints>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
-   <rowConstraints>
-      <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" percentHeight="60.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
-   </rowConstraints>
+<?import javafx.scene.text.Font?>
+<GridPane fx:id="addCategoryView" hgap="5.0" prefHeight="428.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0"
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+          xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="ro.controller.CategoryController">
+    <children>
+        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Category :" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets left="5.0" right="5.0"/>
+            </GridPane.margin>
+        </Label>
+        <TextField fx:id="categoryLabel" maxWidth="1.7976931348623157E308" onKeyReleased="#fillDescription"
+                   GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </GridPane.margin>
+        </TextField>
+        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Description : " GridPane.rowIndex="2"
+               GridPane.valignment="CENTER">
+            <GridPane.margin>
+                <Insets left="5.0" right="5.0"/>
+            </GridPane.margin>
+        </Label>
+        <TextArea fx:id="categoryDescription" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0"
+                  GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <GridPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </GridPane.margin>
+        </TextArea>
+        <HBox alignment="CENTER" GridPane.columnSpan="2">
+            <children>
+                <Label text="Add Category" textAlignment="CENTER" GridPane.columnIndex="1">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <HBox alignment="CENTER_RIGHT" GridPane.columnSpan="2" GridPane.rowIndex="4">
+            <children>
+                <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#deleteCategory" prefWidth="55.0"
+                        text="Delete">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearForm" prefWidth="55.0" text="Clear">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveCategory" prefWidth="55.0" text="Save">
+                    <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+        <ListView fx:id="categoryList" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0"
+                  GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </GridPane.margin>
+        </ListView>
+        <Label text="All Categories :" GridPane.rowIndex="3">
+            <GridPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </GridPane.margin>
+        </Label>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="25.0"/>
+        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+    </columnConstraints>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
+    <rowConstraints>
+        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES"/>
+        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" percentHeight="40.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" percentHeight="40.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
 </GridPane>
