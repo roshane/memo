@@ -1,5 +1,6 @@
 package ro.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -124,24 +125,25 @@ public class MemoController {
     void deleteItem(ActionEvent event) {
         String selectedItem = (String) lvMemoItems.getSelectionModel().getSelectedItem();
         LOGGER.debug("deleting item [{}]", selectedItem);
-        //TODO implement delete logic here
+        lvMemoItems.getItems().remove(selectedItem);
+        memoItemList.stream().filter(item->item.getShortDescription().equals(selectedItem))
+                .findFirst().ifPresent(item->{
+            coreService.delete(item);
+            memoItemList.remove(item);
+        });
     }
 
     @FXML
     void initialize() {
         LOGGER.debug("Initializing [{}]", MemoController.class.getSimpleName());
-        if (this.lvMemoItems == null) {
+
+        Platform.runLater(()->{
+            LOGGER.debug("RunLater method triggered.");
             this.lvMemoItems = ((ViewContainerController) VCStore.getController(ViewContainerController.class))
                     .getTvMemoItems();
             this.memoItemList = FXCollections.observableArrayList();
-//        TODO complete onChange listener to memoItemsList
-//            memoItemList.addListener((ListChangeListener<MemoItem>) c -> {
-//                if(lvMemoItems!=null)
-//                    lvMemoItems.getItems().add(c.getAddedSubList().get(0).getShortDescription());
-//                LOGGER.debug("changed item [{}]", c);
-//            });
-        }
-        refresh();
+            refresh();
+        });
 
     }
 
