@@ -2,6 +2,7 @@ package ro.app;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -23,9 +24,11 @@ public class Runner extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        VCStore.loadResources("/memo.fxml", "/category.fxml","/container.fxml");
+        VCStore.loadResources("/memo.fxml", "/category.fxml", "/container.fxml");
         primaryStage.setScene(new Scene((AnchorPane) VCStore.getViewById("containerView")));
         primaryStage.setTitle("Memo manager");
         primaryStage.show();
+        primaryStage.getIcons().add(new Image(Runner.class.getResourceAsStream("/images/memo.png")));
+
     }
 }

@@ -28,7 +28,7 @@
                 <Insets left="5.0" right="5.0"/>
             </GridPane.margin>
         </Label>
-        <ComboBox fx:id="memoCategory" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
+        <ComboBox fx:id="categoryComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
                   GridPane.valignment="CENTER">
             <GridPane.margin>
                 <Insets left="5.0" right="5.0"/>
@@ -51,19 +51,19 @@
                 <Insets left="5.0" right="5.0"/>
             </GridPane.margin>
         </Label>
-        <DatePicker fx:id="memoAddedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
+        <DatePicker fx:id="addedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
                     GridPane.rowIndex="2">
             <GridPane.margin>
                 <Insets left="5.0" right="5.0"/>
             </GridPane.margin>
         </DatePicker>
-        <DatePicker fx:id="memoLastModifiedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
+        <DatePicker fx:id="lastModifiedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
                     GridPane.rowIndex="3">
             <GridPane.margin>
                 <Insets left="5.0" right="5.0"/>
             </GridPane.margin>
         </DatePicker>
-        <TextField fx:id="memoShortDescription" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
+        <TextField fx:id="shortDescriptionTextBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
                    GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets left="5.0" right="5.0"/>

@@ -45,13 +45,13 @@ public class MemoController {
     @FXML
     private Button btnDelete;
     @FXML
-    private ComboBox<String> memoCategory;
+    private ComboBox<String> categoryComboBox;
     @FXML
-    private DatePicker memoLastModifiedDate;
+    private DatePicker lastModifiedDate;
     @FXML
-    private DatePicker memoAddedDate;
+    private DatePicker addedDate;
     @FXML
-    private TextField memoShortDescription;
+    private TextField shortDescriptionTextBox;
     @FXML
     private AnchorPane actionViewContainer;
     @FXML
@@ -59,22 +59,22 @@ public class MemoController {
 
     private GridPane addCategoryView;
 
-    private ListView lvMemoItems;
+    private ListView memoItemListView;
 
     private List<FormError> validationErrors;
 
-    private ObservableList<MemoItem> memoItemList;
+    private ObservableList<MemoItem> observableMomoItemList;
 
     @FXML
     void saveItem(ActionEvent event) {
         if (isValidForm()) {
             final MemoItem memoItem = new MemoItem(
-                    memoCategory.getSelectionModel().getSelectedItem(),
-                    memoShortDescription.getText(),
-                    memoAddedDate.getValue(),
-                    memoLastModifiedDate.getValue(),
+                    categoryComboBox.getSelectionModel().getSelectedItem(),
+                    shortDescriptionTextBox.getText(),
+                    addedDate.getValue(),
+                    lastModifiedDate.getValue(),
                     memoContent.getText());
-            memoItemList.add(memoItem);
+            observableMomoItemList.add(memoItem);
             coreService.save(memoItem);
             clearForm(new ActionEvent());
             loadMemoItems();
@@ -103,11 +103,11 @@ public class MemoController {
                 }
             }
         });
-        for (MemoItem memoItem : coreService.find(memoShortDescription.getText().trim())) {
+        for (MemoItem memoItem : coreService.find(shortDescriptionTextBox.getText().trim())) {
             if (memoItem.getCategory()
-                    .equals(memoCategory.getSelectionModel().getSelectedItem()))
+                    .equals(categoryComboBox.getSelectionModel().getSelectedItem()))
                 validationErrors
-                        .add(new FormError(memoShortDescription, FormError.ERROR_TYPE.ALREADY_EXIST));
+                        .add(new FormError(shortDescriptionTextBox, FormError.ERROR_TYPE.ALREADY_EXIST));
         }
         return validationErrors.size() == 0;
     }
@@ -123,13 +123,13 @@ public class MemoController {
 
     @FXML
     void deleteItem(ActionEvent event) {
-        String selectedItem = (String) lvMemoItems.getSelectionModel().getSelectedItem();
+        String selectedItem = (String) memoItemListView.getSelectionModel().getSelectedItem();
         LOGGER.debug("deleting item [{}]", selectedItem);
-        lvMemoItems.getItems().remove(selectedItem);
-        memoItemList.stream().filter(item->item.getShortDescription().equals(selectedItem))
-                .findFirst().ifPresent(item->{
+        memoItemListView.getItems().remove(selectedItem);
+        observableMomoItemList.stream().filter(item -> item.getShortDescription().equals(selectedItem))
+                .findFirst().ifPresent(item -> {
             coreService.delete(item);
-            memoItemList.remove(item);
+            observableMomoItemList.remove(item);
         });
     }
 
@@ -137,50 +137,66 @@ public class MemoController {
     void initialize() {
         LOGGER.debug("Initializing [{}]", MemoController.class.getSimpleName());
 
-        Platform.runLater(()->{
+        Platform.runLater(() -> {
             LOGGER.debug("RunLater method triggered.");
-            this.lvMemoItems = ((ViewContainerController) VCStore.getController(ViewContainerController.class))
+            this.memoItemListView = ((ViewContainerController) VCStore.getController(ViewContainerController.class))
                     .getTvMemoItems();
-            this.memoItemList = FXCollections.observableArrayList();
+            this.observableMomoItemList = FXCollections.observableArrayList();
+            memoItemListView.getSelectionModel().selectedItemProperty()
+                    .addListener((observable, oldValue, newValue) -> {
+                        displaySelectedMemoItem(newValue);
+                    });
             refresh();
         });
 
+    }
+
+    private void displaySelectedMemoItem(Object selectedValue) {
+        if (selectedValue instanceof String) {
+            observableMomoItemList.stream().filter(item -> item.getShortDescription().equals(selectedValue))
+                    .findFirst().ifPresent(item -> {
+                categoryComboBox.getSelectionModel().select(item.getCategory());
+                addedDate.setValue(item.getDateAdded());
+                lastModifiedDate.setValue(item.getDateModified());
+                memoContent.setText(item.getContent());
+            });
+        }
     }
 
 
     @FXML
     void refresh() {
         LOGGER.debug("refreshing the addMemoView");
-        memoAddedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
-        memoLastModifiedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
+        addedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
+        lastModifiedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
         loadCategories();
         loadMemoItems();
     }
 
     private void loadMemoItems() {
         LOGGER.debug("loading memo items");
-        memoItemList.clear();
-        coreService.findAllMemoItems().forEach(memoItemList::add);
-        if (lvMemoItems == null) {
-            LOGGER.debug("loading lvMemoItems");
-            this.lvMemoItems = ((ViewContainerController) VCStore.getController(ViewContainerController.class))
+        observableMomoItemList.clear();
+        coreService.findAllMemoItems().forEach(observableMomoItemList::add);
+        if (memoItemListView == null) {
+            LOGGER.debug("loading memoItemListView");
+            this.memoItemListView = ((ViewContainerController) VCStore.getController(ViewContainerController.class))
                     .getTvMemoItems();
         }
-        if (lvMemoItems != null) {
-            LOGGER.debug("lvMemoItems Loaded");
-            lvMemoItems.getItems().clear();
-            memoItemList.forEach(memoItem -> lvMemoItems.getItems()
+        if (memoItemListView != null) {
+            LOGGER.debug("memoItemListView Loaded");
+            memoItemListView.getItems().clear();
+            observableMomoItemList.forEach(memoItem -> memoItemListView.getItems()
                     .add(memoItem.getShortDescription()));
         } else {
-            LOGGER.error("lvMemoItems loading failed");
+            LOGGER.error("memoItemListView loading failed");
         }
     }
 
     private void loadCategories() {
         LOGGER.debug("loading categories");
-        memoCategory.getItems().clear();
+        categoryComboBox.getItems().clear();
         coreService.findAllCategories().forEach(category -> {
-            memoCategory.getItems().add(category.getLabel());
+            categoryComboBox.getItems().add(category.getLabel());
         });
     }
 }
