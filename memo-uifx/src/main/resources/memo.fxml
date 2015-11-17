@@ -1,120 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<GridPane fx:id="addMemoView" hgap="5.0" layoutX="78.0" layoutY="154.0" prefHeight="428.0"
-          prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-          AnchorPane.rightAnchor="0.0"
-          AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.controller.MemoController"
-          stylesheets="style.css">
+
+<GridPane fx:id="addMemoView" hgap="5.0" layoutX="78.0" layoutY="154.0" prefHeight="428.0" prefWidth="450.0" stylesheets="style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.controller.MemoController">
     <columnConstraints>
-        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="25.0"/>
-        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="25.0" />
+        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES"/>
-        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES"/>
-        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-        <RowConstraints percentHeight="50.0" vgrow="SOMETIMES"/>
-        <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+        <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints percentHeight="50.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Category :">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="5.0" right="5.0" />
             </GridPane.margin>
         </Label>
-        <ComboBox fx:id="categoryComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-                  GridPane.valignment="CENTER">
+        <ComboBox fx:id="categoryComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.valignment="CENTER">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="5.0" right="5.0" />
             </GridPane.margin>
         </ComboBox>
-        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Short Description :"
-               GridPane.rowIndex="1">
+        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Short Description :" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="5.0" right="5.0" />
             </GridPane.margin>
         </Label>
         <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Date Added :" GridPane.rowIndex="2">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="5.0" right="5.0" />
             </GridPane.margin>
         </Label>
-        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Date Last Modified :"
-               GridPane.rowIndex="3">
+        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Date Last Modified :" GridPane.rowIndex="3">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="5.0" right="5.0" />
             </GridPane.margin>
         </Label>
-        <DatePicker fx:id="addedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-                    GridPane.rowIndex="2">
+        <DatePicker fx:id="addedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="5.0" right="5.0" />
             </GridPane.margin>
         </DatePicker>
-        <DatePicker fx:id="lastModifiedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-                    GridPane.rowIndex="3">
+        <DatePicker fx:id="lastModifiedDate" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="5.0" right="5.0" />
             </GridPane.margin>
         </DatePicker>
-        <TextField fx:id="shortDescriptionTextBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1"
-                   GridPane.rowIndex="1">
+        <TextField fx:id="shortDescriptionTextBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="5.0" right="5.0" />
             </GridPane.margin>
         </TextField>
-        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Content : " GridPane.rowIndex="4"
-               GridPane.valignment="CENTER">
+        <Label alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" text="Content : " GridPane.rowIndex="4" GridPane.valignment="CENTER">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="5.0" right="5.0" />
             </GridPane.margin>
         </Label>
-        <TextArea fx:id="memoContent" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0"
-                  GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <TextArea fx:id="memoContent" maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <GridPane.margin>
-                <Insets left="5.0" right="5.0"/>
+                <Insets left="5.0" right="5.0" />
             </GridPane.margin>
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </TextArea>
-        <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="450.0" GridPane.columnSpan="2"
-              GridPane.rowIndex="5">
+        <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="450.0" GridPane.columnSpan="2" GridPane.rowIndex="5">
             <children>
-                <Button fx:id="btnSave" layoutX="44.0" layoutY="19.0" mnemonicParsing="false" onAction="#saveItem"
-                        prefWidth="60.0" text="Save">
+                <Button fx:id="btnSave" layoutX="44.0" layoutY="19.0" mnemonicParsing="false" onAction="#saveItem" prefWidth="65.0" text="Save">
                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
                 </Button>
-                <Button fx:id="btnCancel" layoutX="123.0" layoutY="19.0" mnemonicParsing="false" onAction="#clearForm"
-                        prefWidth="60.0" text="Cancel">
+                <Button fx:id="btnCancel" layoutX="123.0" layoutY="19.0" mnemonicParsing="false" onAction="#clearForm" prefWidth="65.0" text="Cancel">
                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
                 </Button>
-                <Button fx:id="btnDelete" layoutX="225.0" layoutY="19.0" mnemonicParsing="false" onAction="#deleteItem"
-                        prefWidth="60.0" text="Delete">
+                <Button fx:id="btnDelete" layoutX="225.0" layoutY="19.0" mnemonicParsing="false" onAction="#deleteItem" prefWidth="65.0" text="Delete">
                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
                 </Button>
-                <Button fx:id="btnRefresh" mnemonicParsing="false" onAction="#refresh" prefWidth="20.0" text="*"
-                        styleClass="btnRefresh">
+                <Button fx:id="btnRefresh" mnemonicParsing="false" onAction="#refresh" prefWidth="20.0" styleClass="btnRefresh">
                     <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </HBox.margin>
                 </Button>
             </children>
         </HBox>
     </children>
     <padding>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
 </GridPane>

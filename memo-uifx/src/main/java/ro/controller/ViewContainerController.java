@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -34,7 +35,10 @@ public class ViewContainerController {
     @FXML
     private AnchorPane actionViewContainer;
     @FXML
-    private ListView lvMemoItems;
+    private ListView<String> lvMemoItems;
+
+    @FXML
+    private TextField searchTextBox;
 
     @FXML
     void viewAddMemoView(ActionEvent event) {
@@ -72,8 +76,12 @@ public class ViewContainerController {
         }
     }
 
-    public ListView getTvMemoItems() {
-        return lvMemoItems;
+    public ListView<String> getTvMemoItems() {
+        return this.lvMemoItems;
+    }
+
+    public TextField getSearchTextBox() {
+        return this.searchTextBox;
     }
 
 }

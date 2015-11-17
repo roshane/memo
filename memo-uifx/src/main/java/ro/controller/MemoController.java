@@ -1,11 +1,15 @@
 package ro.controller;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import org.slf4j.Logger;
@@ -23,6 +27,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @Component
 public class MemoController {
@@ -59,7 +64,9 @@ public class MemoController {
 
     private GridPane addCategoryView;
 
-    private ListView memoItemListView;
+    private ListView<String> memoItemListView;
+
+    private TextField searchTextBox;
 
     private List<FormError> validationErrors;
 
@@ -153,16 +160,36 @@ public class MemoController {
 
         Platform.runLater(() -> {
             LOGGER.debug("RunLater method triggered.");
-            this.memoItemListView = ((ViewContainerController) VCStore.getController(ViewContainerController.class))
-                    .getTvMemoItems();
+            ViewContainerController viewContainerController = (ViewContainerController) VCStore.getController(ViewContainerController.class);
+            this.memoItemListView = viewContainerController.getTvMemoItems();
+            this.searchTextBox = viewContainerController.getSearchTextBox();
             this.observableMomoItemList = FXCollections.observableArrayList();
             memoItemListView.getSelectionModel().selectedItemProperty()
                     .addListener((observable, oldValue, newValue) -> {
                         displaySelectedMemoItem(newValue);
                     });
+            searchTextBox.textProperty().addListener((observable, oldValue, newValue) -> filterSearch(newValue));
             refresh();
         });
 
+    }
+
+    private void filterSearch(String searchText) {
+        if (!StringUtils.isEmpty(searchText)) {
+            LOGGER.debug("filtering memoitems has description like [{}]",searchText);
+            List<String> searchMatches = observableMomoItemList.stream()
+                    .filter(item -> item.getShortDescription().toLowerCase().contains(searchText.toLowerCase()))
+                    .map(MemoItem::getShortDescription)
+                    .collect(Collectors.toList());
+            memoItemListView.getItems().clear();
+            memoItemListView.setItems(FXCollections.observableArrayList(searchMatches));
+        }else{
+            List<String> searchMatches = observableMomoItemList.stream()
+                    .map(MemoItem::getShortDescription)
+                    .collect(Collectors.toList());
+            memoItemListView.getItems().clear();
+            memoItemListView.setItems(FXCollections.observableArrayList(searchMatches));
+        }
     }
 
     private void displaySelectedMemoItem(Object selectedValue) {
@@ -172,8 +199,8 @@ public class MemoController {
                 categoryComboBox.getSelectionModel().select(item.getCategory());
                 addedDate.setValue(item.getDateAdded());
                 lastModifiedDate.setValue(item.getDateModified());
-                memoContent.setText(item.getContent());
                 shortDescriptionTextBox.setText(item.getShortDescription());
+                memoContent.setText(item.getContent());
             });
         }
     }

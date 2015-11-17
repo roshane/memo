@@ -1,73 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<AnchorPane fx:id="containerView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="550.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ro.controller.ViewContainerController">
+
+<AnchorPane fx:id="containerView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.controller.ViewContainerController">
     <children>
-        <SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity"
-                   minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0"
-                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                   AnchorPane.topAnchor="0.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+        <SplitPane dividerPositions="0.29797979797979796" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
             <items>
-                <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0">
+                <AnchorPane maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="200.0">
                     <children>
-                        <ListView fx:id="lvMemoItems" layoutX="41.0" layoutY="49.0" AnchorPane.bottomAnchor="0.0"
-                                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                        <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <children>
+                                <TextField fx:id="searchTextBox" promptText="search">
+                                    <font>
+                                        <Font size="13.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                </TextField>
+                                <ListView fx:id="lvMemoItems" maxHeight="1.7976931348623157E308" prefHeight="519.0" prefWidth="153.0" VBox.vgrow="ALWAYS" />
+                            </children>
+                        </VBox>
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
-                        <SplitPane dividerPositions="0.1310483870967742" orientation="VERTICAL" prefHeight="498.0"
-                                   prefWidth="452.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.1310483870967742" orientation="VERTICAL" prefHeight="498.0" prefWidth="452.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <items>
-                                <AnchorPane id="menuView" maxHeight="-Infinity" maxWidth="1.7976931348623157E308"
-                                            nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0">
+                                <AnchorPane id="menuView" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0">
                                     <children>
-                                        <HBox prefHeight="62.0" prefWidth="590.0" AnchorPane.bottomAnchor="0.0"
-                                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                              AnchorPane.topAnchor="0.0">
+                                        <HBox prefHeight="62.0" prefWidth="590.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <children>
-                                                <ImageView disable="true" fitHeight="58.0" fitWidth="200.0"
-                                                           opacity="0.65" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView disable="true" fitHeight="58.0" fitWidth="200.0" opacity="0.65" pickOnBounds="true" preserveRatio="true">
                                                     <image>
-                                                        <Image url="@images/memo-logo.png"/>
+                                                        <Image url="@images/memo-logo.png" />
                                                     </image>
                                                     <HBox.margin>
-                                                        <Insets left="5.0" top="20.0"/>
+                                                        <Insets left="5.0" top="20.0" />
                                                     </HBox.margin>
                                                 </ImageView>
                                             </children>
                                         </HBox>
-                                        <HBox alignment="CENTER_RIGHT" layoutX="250.0" layoutY="14.0" prefHeight="49.0"
-                                              prefWidth="450.0" AnchorPane.bottomAnchor="0.0"
-                                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                        <HBox alignment="CENTER_RIGHT" layoutX="250.0" layoutY="14.0" prefHeight="49.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <children>
-                                                <Button fx:id="btnViewAddMemo" layoutX="225.0" layoutY="19.0"
-                                                        mnemonicParsing="false" onAction="#viewAddMemoView"
-                                                        prefWidth="100.0" text="Add Memo">
+                                                <Button fx:id="btnViewAddMemo" layoutX="225.0" layoutY="19.0" mnemonicParsing="false" onAction="#viewAddMemoView" prefWidth="110.0" text="Add Memo">
                                                     <HBox.margin>
-                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                     </HBox.margin>
                                                 </Button>
-                                                <Button fx:id="btnViewAddCategory" layoutX="235.0" layoutY="29.0"
-                                                        mnemonicParsing="false" onAction="#viewAddCategory"
-                                                        prefWidth="100.0" text="Add Category">
+                                                <Button fx:id="btnViewAddCategory" layoutX="235.0" layoutY="29.0" mnemonicParsing="false" onAction="#viewAddCategory" prefWidth="110.0" text="Add Category">
                                                     <HBox.margin>
-                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                                     </HBox.margin>
                                                 </Button>
                                             </children>
                                         </HBox>
                                     </children>
                                 </AnchorPane>
-                                <AnchorPane id="mainView" fx:id="actionViewContainer" minHeight="0.0" minWidth="0.0"
-                                            prefHeight="329.0" prefWidth="450.0">
+                                <AnchorPane id="mainView" fx:id="actionViewContainer" minHeight="0.0" minWidth="0.0" prefHeight="329.0" prefWidth="450.0">
                                     <children>
 
                                     </children>
