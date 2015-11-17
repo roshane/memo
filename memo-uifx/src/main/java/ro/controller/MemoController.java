@@ -173,6 +173,7 @@ public class MemoController {
                 addedDate.setValue(item.getDateAdded());
                 lastModifiedDate.setValue(item.getDateModified());
                 memoContent.setText(item.getContent());
+                shortDescriptionTextBox.setText(item.getShortDescription());
             });
         }
     }
