@@ -1,5 +1,8 @@
 package ro.controller;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -42,13 +45,13 @@ public class MemoController {
     @FXML
     private Button btnDelete;
     @FXML
-    private ComboBox<String> memoCategory;
+    private ComboBox<String> categoryComboBox;
     @FXML
-    private DatePicker memoLastModifiedDate;
+    private DatePicker lastModifiedDate;
     @FXML
-    private DatePicker memoAddedDate;
+    private DatePicker addedDate;
     @FXML
-    private TextField memoShortDescription;
+    private TextField shortDescriptionTextBox;
     @FXML
     private AnchorPane actionViewContainer;
     @FXML
@@ -56,29 +59,52 @@ public class MemoController {
 
     private GridPane addCategoryView;
 
+    private ListView memoItemListView;
+
     private List<FormError> validationErrors;
+
+    private ObservableList<MemoItem> observableMomoItemList;
+
+    private MemoItem alreadyExistItem;
 
     @FXML
     void saveItem(ActionEvent event) {
-        if (isValidateForm()) {
-            final MemoItem memoItem = new MemoItem(
-                    memoCategory.getSelectionModel().getSelectedItem(),
-                    memoShortDescription.getText(),
-                    memoAddedDate.getValue(),
-                    memoLastModifiedDate.getValue(),
-                    memoContent.getText());
+        final MemoItem memoItem = getMemoItem();
+        if (isValidForm()) {
+            observableMomoItemList.add(memoItem);
+            coreService.save(memoItem);
+            clearForm(new ActionEvent());
+            loadMemoItems();
             LOGGER.debug("Application save event [{}]", memoItem);
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            String errorMessages = validationErrors.stream()
-                    .map(FormError::toString).reduce("", (a, b) -> a.concat("\n" + b));
-            alert.setContentText(errorMessages);
-            alert.setHeaderText(null);
-            alert.show();
+            if (alreadyExistItem != null &&
+                    alreadyExistItem.getContent().hashCode() != memoItem.getContent().hashCode()) {
+                memoItem.setId(alreadyExistItem.getId());
+                coreService.save(memoItem);
+                loadMemoItems();
+                LOGGER.debug("Memo Item updated [{}]", memoItem);
+                alreadyExistItem = null;
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                String errorMessages = validationErrors.stream()
+                        .map(FormError::toString).reduce("", (a, b) -> a.concat("\n" + b));
+                alert.setContentText(errorMessages);
+                alert.setHeaderText(null);
+                alert.show();
+            }
         }
     }
 
-    private boolean isValidateForm() {
+    private MemoItem getMemoItem() {
+        return new MemoItem(
+                categoryComboBox.getSelectionModel().getSelectedItem(),
+                shortDescriptionTextBox.getText(),
+                addedDate.getValue(),
+                lastModifiedDate.getValue(),
+                memoContent.getText());
+    }
+
+    private boolean isValidForm() {
         validationErrors = new ArrayList<>();
         addMemoView.getChildren().forEach(node -> {
             if (node instanceof TextInputControl) {
@@ -86,12 +112,22 @@ public class MemoController {
                     validationErrors.add(new FormError(node, FormError.ERROR_TYPE.EMPTY_FIELD));
                 }
             }
+            if (node instanceof ComboBox) {
+                if (StringUtils.isEmpty(((ComboBox) node).getSelectionModel().getSelectedItem())) {
+                    validationErrors.add(new FormError(node, FormError.ERROR_TYPE.EMPTY_FIELD));
+                }
+            }
         });
+        for (MemoItem memoItem : coreService.find(shortDescriptionTextBox.getText().trim())) {
+            if (memoItem.getCategory().equals(categoryComboBox.getSelectionModel().getSelectedItem()))
+                alreadyExistItem = memoItem;
+            validationErrors.add(new FormError(shortDescriptionTextBox, FormError.ERROR_TYPE.ALREADY_EXIST));
+        }
         return validationErrors.size() == 0;
     }
 
     @FXML
-    void resetForm(ActionEvent event) {
+    void clearForm(ActionEvent event) {
         addMemoView.getChildren().forEach(node -> {
             if (node instanceof TextInputControl) {
                 ((TextInputControl) node).clear();
@@ -101,28 +137,80 @@ public class MemoController {
 
     @FXML
     void deleteItem(ActionEvent event) {
-        System.out.println("Application delete event");
+        String selectedItem = (String) memoItemListView.getSelectionModel().getSelectedItem();
+        LOGGER.debug("deleting item [{}]", selectedItem);
+        memoItemListView.getItems().remove(selectedItem);
+        observableMomoItemList.stream().filter(item -> item.getShortDescription().equals(selectedItem))
+                .findFirst().ifPresent(item -> {
+            coreService.delete(item);
+            observableMomoItemList.remove(item);
+        });
     }
 
     @FXML
     void initialize() {
-        assert memoContent != null : "fx:id=\"memoContent\" was not injected: check your FXML file 'home.fxml'.";
-        assert btnCancel != null : "fx:id=\"btnCancel\" was not injected: check your FXML file 'home.fxml'.";
-        assert btnSave != null : "fx:id=\"btnSave\" was not injected: check your FXML file 'home.fxml'.";
-        assert btnDelete != null : "fx:id=\"btnDelete\" was not injected: check your FXML file 'home.fxml'.";
-        assert memoCategory != null : "fx:id=\"memoCategory\" was not injected: check your FXML file 'home.fxml'.";
-        assert memoLastModifiedDate != null : "fx:id=\"memoLastModifiedDate\" was not injected: check your FXML file 'home.fxml'.";
-        assert memoAddedDate != null : "fx:id=\"memoAddedDate\" was not injected: check your FXML file 'home.fxml'.";
-        assert memoShortDescription != null : "fx:id=\"memoShortDescription\" was not injected: check your FXML file 'home.fxml'.";
+        LOGGER.debug("Initializing [{}]", MemoController.class.getSimpleName());
 
-        memoAddedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
-        memoLastModifiedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
+        Platform.runLater(() -> {
+            LOGGER.debug("RunLater method triggered.");
+            this.memoItemListView = ((ViewContainerController) VCStore.getController(ViewContainerController.class))
+                    .getTvMemoItems();
+            this.observableMomoItemList = FXCollections.observableArrayList();
+            memoItemListView.getSelectionModel().selectedItemProperty()
+                    .addListener((observable, oldValue, newValue) -> {
+                        displaySelectedMemoItem(newValue);
+                    });
+            refresh();
+        });
+
+    }
+
+    private void displaySelectedMemoItem(Object selectedValue) {
+        if (selectedValue instanceof String) {
+            observableMomoItemList.stream().filter(item -> item.getShortDescription().equals(selectedValue))
+                    .findFirst().ifPresent(item -> {
+                categoryComboBox.getSelectionModel().select(item.getCategory());
+                addedDate.setValue(item.getDateAdded());
+                lastModifiedDate.setValue(item.getDateModified());
+                memoContent.setText(item.getContent());
+            });
+        }
+    }
+
+
+    @FXML
+    void refresh() {
+        LOGGER.debug("refreshing the addMemoView");
+        addedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
+        lastModifiedDate.setValue(LocalDate.now(ZoneId.systemDefault()));
         loadCategories();
+        loadMemoItems();
+    }
+
+    private void loadMemoItems() {
+        LOGGER.debug("loading memo items");
+        observableMomoItemList.clear();
+        coreService.findAllMemoItems().forEach(observableMomoItemList::add);
+        if (memoItemListView == null) {
+            LOGGER.debug("loading memoItemListView");
+            this.memoItemListView = ((ViewContainerController) VCStore.getController(ViewContainerController.class))
+                    .getTvMemoItems();
+        }
+        if (memoItemListView != null) {
+            LOGGER.debug("memoItemListView Loaded");
+            memoItemListView.getItems().clear();
+            observableMomoItemList.forEach(memoItem -> memoItemListView.getItems()
+                    .add(memoItem.getShortDescription()));
+        } else {
+            LOGGER.error("memoItemListView loading failed");
+        }
     }
 
     private void loadCategories() {
+        LOGGER.debug("loading categories");
+        categoryComboBox.getItems().clear();
         coreService.findAllCategories().forEach(category -> {
-            memoCategory.getItems().add(category.getLabel());
+            categoryComboBox.getItems().add(category.getLabel());
         });
     }
 }

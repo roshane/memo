@@ -1,10 +1,11 @@
 package ro.controller;
 
 import javafx.animation.FadeTransition;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
@@ -13,13 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import ro.domain.ViewNotFoundException;
 
+
 /**
  * @author roshanep@hsenidmobile.com
  */
 @Component
 public class ViewContainerController {
 
-    private static final Logger LOGGER= LoggerFactory.getLogger(ViewContainerController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewContainerController.class);
     @FXML
     private Button btnViewAddMemo;
 
@@ -31,6 +33,8 @@ public class ViewContainerController {
 
     @FXML
     private AnchorPane actionViewContainer;
+    @FXML
+    private ListView lvMemoItems;
 
     @FXML
     void viewAddMemoView(ActionEvent event) {
@@ -52,7 +56,7 @@ public class ViewContainerController {
     }
 
     private void changeView(String viewId) {
-        if (actionViewContainer.getChildren().size()>0) {
+        if (actionViewContainer.getChildren().size() > 0) {
             actionViewContainer.getChildren().remove(0);
             try {
                 GridPane gridPane = (GridPane) VCStore.getViewById(viewId);
@@ -63,9 +67,13 @@ public class ViewContainerController {
                 actionViewContainer.getChildren().add(gridPane);
                 ft.play();
             } catch (ViewNotFoundException e) {
-                LOGGER.error("error : {}",e);
+                LOGGER.error("error : {}", e);
             }
         }
+    }
+
+    public ListView getTvMemoItems() {
+        return lvMemoItems;
     }
 
 }

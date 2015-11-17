@@ -32,7 +32,7 @@ public class DefaultCoreService implements CoreService {
 
     @Override
     public Iterable<MemoItem> findAllMemoItems() {
-         return memoItemRepository.findAll();
+        return memoItemRepository.findAll();
     }
 
     @Override
@@ -49,5 +49,11 @@ public class DefaultCoreService implements CoreService {
     @Override
     public Iterable<Category> findAllCategories() {
         return categoryRepository.findAll();
+    }
+
+    @Override
+    public Category delete(Category category) {
+        categoryRepository.delete(category);
+        return category;
     }
 }

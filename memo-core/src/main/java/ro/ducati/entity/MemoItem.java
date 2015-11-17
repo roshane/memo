@@ -1,9 +1,6 @@
 package ro.ducati.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -19,6 +16,8 @@ public class MemoItem {
     private String shortDescription;
     private LocalDate dateAdded;
     private LocalDate dateModified;
+    @Lob
+    @Column(columnDefinition = "clob")
     private String content;
 
     public MemoItem() {

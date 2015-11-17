@@ -19,16 +19,16 @@
         </layout>
     </appender>
 
-    <!--<category name="org">-->
-        <!--<priority value="error"/>-->
-    <!--</category>-->
+    <category name="org">
+        <priority value="error"/>
+    </category>
 
-    <!--<category name="com">-->
-        <!--<priority value="error"/>-->
-    <!--</category>-->
+    <category name="com">
+        <priority value="error"/>
+    </category>
 
     <root>
-        <priority value="error"/>
+        <priority value="debug"/>
         <appender-ref ref="console"/>
         <!--<appender-ref ref="debugFile"/>-->
     </root>

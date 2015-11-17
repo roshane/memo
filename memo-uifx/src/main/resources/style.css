@@ -1,0 +1,5 @@
+.btnRefresh{
+    -fx-background-image: url("images/refresh.png");
+    -fx-background-position: center;
+    -fx-background-size: contain;
+}

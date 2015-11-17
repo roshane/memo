@@ -7,7 +7,7 @@ public class ViewNotFoundException extends Exception {
 
     private static final String MESSAGE = "View Not Found";
 
-    public ViewNotFoundException() {
-        super(MESSAGE);
+    public ViewNotFoundException(String id) {
+        super(MESSAGE+" id");
     }
 }

@@ -23,13 +23,11 @@ public class MemoApplicationContextTest extends BaseTest {
     public void testSample() throws Exception {
         Assert.assertNotNull(coreService);
         coreService.findAllMemoItems().forEach(System.out::println);
-        coreService.findAllCategories().forEach(System.out::println);
+//        coreService.findAllCategories().forEach(System.out::println);
     }
 
-    @Test
+//    @Test
     public void testInsertCategory() throws Exception {
-//        Category category = coreService.save(new Category("maven"));
-//        LOGGER.debug("saved category [{}]",category);
         printAll(coreService.findAllCategories());
     }
 

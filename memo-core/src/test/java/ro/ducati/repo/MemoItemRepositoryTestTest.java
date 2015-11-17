@@ -18,15 +18,22 @@ public class MemoItemRepositoryTestTest extends BaseTest {
     @Autowired
     private MemoItemRepository memoItemRepository;
 
+
     @Before
     public void setUp() throws Exception {
-        final MemoItem memoItem = new MemoItem("Java", "Simple Test", LocalDate.now(), LocalDate.now(), "Sample content");
+        final MemoItem memoItem =
+                new MemoItem("Java", "Simple Test", LocalDate.now(), LocalDate.now(), "   Platform.runLater(()->{\n" +
+                        "            LOGGER.debug(\"RunLater method triggered.\");\n" +
+                        "            this.lvMemoItems = ((ViewContainerController) VCStore.getController(ViewContainerController.class))\n" +
+                        "                    .getTvMemoItems();\n" +
+                        "            this.memoItemList = FXCollections.observableArrayList();\n" +
+                        "            refresh();\n" +
+                        "        });");
         memoItemRepository.save(memoItem);
     }
 
     @Test
     public void testFindAllMemoItems() throws Exception {
-        setUp();
         System.out.println("##########################################################");
         memoItemRepository.findAll().forEach(item->logger.debug("item : [{}]",item));
         System.out.println("##########################################################");
@@ -36,5 +43,10 @@ public class MemoItemRepositoryTestTest extends BaseTest {
     public void testFindByDescription() throws Exception {
         Iterable<MemoItem> items = memoItemRepository.findByShortDescriptionContainingIgnoreCase("SimPle");
         logger.debug("item[{}]",items);
+    }
+
+    @Test
+    public void testDeleteAllMemoItems() throws Exception {
+        memoItemRepository.deleteAll();
     }
 }
