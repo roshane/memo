@@ -65,28 +65,43 @@ public class MemoController {
 
     private ObservableList<MemoItem> observableMomoItemList;
 
+    private MemoItem alreadyExistItem;
+
     @FXML
     void saveItem(ActionEvent event) {
+        final MemoItem memoItem = getMemoItem();
         if (isValidForm()) {
-            final MemoItem memoItem = new MemoItem(
-                    categoryComboBox.getSelectionModel().getSelectedItem(),
-                    shortDescriptionTextBox.getText(),
-                    addedDate.getValue(),
-                    lastModifiedDate.getValue(),
-                    memoContent.getText());
             observableMomoItemList.add(memoItem);
             coreService.save(memoItem);
             clearForm(new ActionEvent());
             loadMemoItems();
             LOGGER.debug("Application save event [{}]", memoItem);
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            String errorMessages = validationErrors.stream()
-                    .map(FormError::toString).reduce("", (a, b) -> a.concat("\n" + b));
-            alert.setContentText(errorMessages);
-            alert.setHeaderText(null);
-            alert.show();
+            if (alreadyExistItem != null &&
+                    alreadyExistItem.getContent().hashCode() != memoItem.getContent().hashCode()) {
+                memoItem.setId(alreadyExistItem.getId());
+                coreService.save(memoItem);
+                loadMemoItems();
+                LOGGER.debug("Memo Item updated [{}]", memoItem);
+                alreadyExistItem = null;
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                String errorMessages = validationErrors.stream()
+                        .map(FormError::toString).reduce("", (a, b) -> a.concat("\n" + b));
+                alert.setContentText(errorMessages);
+                alert.setHeaderText(null);
+                alert.show();
+            }
         }
+    }
+
+    private MemoItem getMemoItem() {
+        return new MemoItem(
+                categoryComboBox.getSelectionModel().getSelectedItem(),
+                shortDescriptionTextBox.getText(),
+                addedDate.getValue(),
+                lastModifiedDate.getValue(),
+                memoContent.getText());
     }
 
     private boolean isValidForm() {
@@ -104,10 +119,9 @@ public class MemoController {
             }
         });
         for (MemoItem memoItem : coreService.find(shortDescriptionTextBox.getText().trim())) {
-            if (memoItem.getCategory()
-                    .equals(categoryComboBox.getSelectionModel().getSelectedItem()))
-                validationErrors
-                        .add(new FormError(shortDescriptionTextBox, FormError.ERROR_TYPE.ALREADY_EXIST));
+            if (memoItem.getCategory().equals(categoryComboBox.getSelectionModel().getSelectedItem()))
+                alreadyExistItem = memoItem;
+            validationErrors.add(new FormError(shortDescriptionTextBox, FormError.ERROR_TYPE.ALREADY_EXIST));
         }
         return validationErrors.size() == 0;
     }
